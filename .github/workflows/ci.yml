@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    uses: portable-agent/.github/.github/workflows/reusable-python.yml@main
+    with:
+      python-version: "3.14"
+  container:
+    needs: python
+    uses: portable-agent/.github/.github/workflows/reusable-container.yml@main
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    with:
+      image-name: agent-runtime

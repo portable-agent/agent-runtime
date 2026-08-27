@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: agent-runtime
+  description: Stateless AI planning и типизированные предложения действий
+  annotations:
+    github.com/project-slug: portable-agent/agent-runtime
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/agent-runtime
+  system: portable-agent
