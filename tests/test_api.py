@@ -1,8 +1,8 @@
 from fastapi.testclient import TestClient
 
-from portable_agent.main import app
+from portable_agent.main import create_app
 
-client = TestClient(app)
+client = TestClient(create_app())
 
 
 def test_live_returns_up() -> None:

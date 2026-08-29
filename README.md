@@ -1,19 +1,49 @@
 # Agent Runtime
 
-Stateless AI-runtime платформы Portable Agent. Он превращает пользовательский текст и контекст
-в типизированные предложения действий, но не исполняет их сам. Исполнение, approval и аудит принадлежат
-`action-service`, поэтому смена LLM-провайдера не меняет trust boundary.
+`agent-runtime` — stateless Python-сервис платформы Portable Agent. Он получает текст пользователя,
+контекст и список доступных коннекторов, затем готовит типизированное предложение действия.
 
-## Стек
+Сервис **не исполняет действия**, не хранит деньги, токены и историю. Исполнение, подтверждение
+пользователем и аудит принадлежат `action-service`.
 
-Python 3.14, FastAPI, Pydantic 2, uv, Ruff, mypy и pytest.
+## Что уже есть
 
-## Локальный запуск
+- HTTP API на FastAPI;
+- простой MVC-подобный каркас;
+- локальные demo-адаптеры модели и policy для разработки без внешних сервисов;
+- Ruff, strict mypy, pytest и проверка покрытия;
+- русская документация MkDocs/Backstage TechDocs.
+
+## Структура
+
+```text
+src/portable_agent/
+├── controllers/   # HTTP-вход
+├── services/      # сценарии приложения
+├── repositories/  # клиенты внешней AI-модели и policy
+├── models/        # внутренние модели
+├── schemas/       # HTTP request/response
+├── config/        # сборка зависимостей
+├── exceptions/    # ошибки приложения
+└── main.py        # создание FastAPI
+```
+
+## Быстрый старт
 
 ```bash
 uv sync --all-groups
 uv run fastapi dev src/portable_agent/main.py
 ```
 
-В development-профиле используется детерминированный gateway без внешней модели. Следующий адаптер
-реализует тот же `ModelGateway` для выбранного LLM и получает ключ только через secret manager.
+Проверки:
+
+```bash
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy src tests
+uv run pytest
+uv run mkdocs build --strict
+```
+
+Подробности: [docs/index.md](docs/index.md). Правила для разработчиков и AI-агентов:
+[AGENTS.md](AGENTS.md).
