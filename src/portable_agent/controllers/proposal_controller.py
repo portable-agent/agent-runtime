@@ -14,5 +14,8 @@ async def create_proposal(
     request: ProposalRequest,
     service: Annotated[ProposalService, Depends(get_proposal_service)],
 ) -> ProposalResponse:
-    proposal = await service.propose(request.utterance, request.context.to_model())
-    return ProposalResponse(proposal=proposal)
+    result = await service.propose(request.utterance, request.context.to_model())
+    return ProposalResponse(
+        proposal=result.proposal,
+        clarification=result.clarification,
+    )

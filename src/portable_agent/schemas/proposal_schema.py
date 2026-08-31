@@ -2,7 +2,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from portable_agent.models.proposal import ActionPlan, UserContext
+from portable_agent.models.proposal import ActionPlan, Clarification, UserContext
 
 
 class ContextData(BaseModel):
@@ -29,3 +29,4 @@ class ProposalRequest(BaseModel):
 
 class ProposalResponse(BaseModel):
     proposal: ActionPlan | None
+    clarification: Clarification | None
