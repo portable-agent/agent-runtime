@@ -14,11 +14,18 @@ GET /health/live
 2. Обнови окружение: `uv sync --locked --all-groups`.
 3. Запусти проверки из `docs/development.md`.
 4. Проверь, что порт 8080 свободен при запуске контейнера.
+5. Проверь `AGENT_OIDC_ISSUER_URL`, `AGENT_OIDC_JWKS_URL` и доступность JWKS из контейнера.
+
+## API возвращает 401
+
+Проверь, что заголовок имеет вид `Authorization: Bearer <token>`. Токен должен быть подписан ключом
+из настроенного JWKS, иметь правильный issuer, audience `agent-runtime`, актуальный `exp`, а также
+UUID в claims `tenant_id` и `sub`.
 
 ## API возвращает null proposal
 
 Это допустимо, если модель не предложила действие или нужного коннектора нет в
-`available_connectors`. В текущем каркасе работает demo-модель с ограниченным поведением.
+`availableConnectors`. В текущем каркасе работает demo-модель с ограниченным поведением.
 
 ## Внешняя модель или policy недоступны
 
