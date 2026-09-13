@@ -29,8 +29,8 @@ class CalendarEvent(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     title: str = Field(min_length=1, max_length=200, pattern=r".*\S.*")
-    start_at: datetime = Field(alias="startAt")
-    end_at: datetime = Field(alias="endAt")
+    start_at: str = Field(alias="startAt")
+    end_at: str = Field(alias="endAt")
     time_zone: str = Field(
         alias="timeZone",
         max_length=100,
@@ -48,9 +48,14 @@ class CalendarEvent(BaseModel):
 
     @model_validator(mode="after")
     def check_time(self) -> Self:
-        if self.start_at.tzinfo is None or self.end_at.tzinfo is None:
+        try:
+            start_at = datetime.fromisoformat(self.start_at)
+            end_at = datetime.fromisoformat(self.end_at)
+        except ValueError as error:
+            raise ValueError("startAt and endAt must be valid date-time values") from error
+        if start_at.tzinfo is None or end_at.tzinfo is None:
             raise ValueError("startAt and endAt must include an offset")
-        if self.end_at <= self.start_at:
+        if end_at <= start_at:
             raise ValueError("endAt must be after startAt")
         if len(self.attendees) != len(set(self.attendees)):
             raise ValueError("attendees must be unique")
