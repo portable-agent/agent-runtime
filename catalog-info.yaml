@@ -6,6 +6,7 @@ metadata:
   annotations:
     github.com/project-slug: portable-agent/agent-runtime
     backstage.io/techdocs-ref: dir:.
+    portable-agent.dev/api-contract: agent-runtime-api@2.1.0
 spec:
   type: service
   lifecycle: experimental

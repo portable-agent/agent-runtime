@@ -16,6 +16,9 @@ uv run fastapi dev src/portable_agent/main.py
 Swagger UI доступен по адресу `http://127.0.0.1:8000/docs`, health check —
 `http://127.0.0.1:8000/health/live`.
 
+Swagger предназначен для локальной разработки. В production выставляй
+`AGENT_DOCS_ENABLED=false` и явно задавай `AGENT_ALLOWED_HOSTS`.
+
 ## TDD
 
 Работа идёт коротким циклом:
@@ -36,3 +39,11 @@ uv run mypy src tests
 uv run pytest
 uv run mkdocs build --strict
 ```
+
+При обновлении общего API сначала выпусти релиз в `portable-agent/contracts`, затем выполни:
+
+```powershell
+.\scripts\update-contract.ps1 -Version 2.1.0
+```
+
+Ручное копирование схемы запрещено: команда проверяет checksum и GitHub attestation.

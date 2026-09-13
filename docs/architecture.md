@@ -5,12 +5,15 @@
 ```mermaid
 sequenceDiagram
     participant Client as Клиент
+    participant OIDC as OIDC/JWKS
     participant Controller as Controller
     participant Service as ProposalService
     participant Model as ModelRepository
     participant Policy as PolicyRepository
 
-    Client->>Controller: POST /api/v1/proposals
+    Client->>Controller: POST /api/v1/proposals + Bearer JWT
+    Controller->>OIDC: проверить подпись, issuer, audience, exp
+    OIDC-->>Controller: tenant_id и sub
     Controller->>Service: propose(text, context)
     Service->>Model: propose(text, context)
     Model-->>Service: ModelReply или null
@@ -53,8 +56,15 @@ config собирает реализации; main подключает controll
 
 Одновременно заполнена только одна часть.
 
-## Внешние контракты
+## Доверенная граница
 
-HTTP-путь и старые имена полей (`utterance`, `actor_id`, `available_connectors`) сохранены для
-совместимости с репозиторием `contracts`. Внутри используются более простые имена `text`, `user_id`
-и `available_tools`; преобразование находится в HTTP-схеме.
+Клиент может передать только текст, язык, часовой пояс и доступные коннекторы. `tenant_id` и `user_id`
+создаются из проверенных claims `tenant_id` и `sub`, поэтому поля JSON не могут подменить владельца
+действия. JWT принимается только с алгоритмом `RS256`, правильными `issuer`, audience
+`agent-runtime`, `exp` и `iat`.
+
+## Внешний контракт
+
+HTTP API следует `portable-agent/contracts` версии `2.1.0`: `text`, `timeZone`,
+`availableConnectors`, `proposalId`, `requiresApproval` и `missingFields`. Копия релизной схемы
+лежит в `contracts/`; contract-тест проверяет по ней настоящий запрос и ответ.

@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import StrEnum
-from typing import Annotated, Any, Self
+from typing import Annotated, Any, Literal, Self
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -58,18 +58,22 @@ class CalendarEvent(BaseModel):
 
 
 class ActionPlan(BaseModel):
-    proposal_id: UUID = Field(default_factory=uuid4)
-    kind: str
-    connector: str
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    proposal_id: UUID = Field(default_factory=uuid4, alias="proposalId")
+    kind: Literal["calendar.create_event"]
+    connector: Literal["fake-calendar"]
     payload: dict[str, Any]
     explanation: str
     risk: Risk
-    requires_approval: bool
+    requires_approval: Literal[True] = Field(alias="requiresApproval")
 
 
 class Clarification(BaseModel):
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
     question: str = Field(min_length=1, max_length=500)
-    missing_fields: list[str]
+    missing_fields: list[str] = Field(alias="missingFields")
 
 
 class ProposalResult(BaseModel):
