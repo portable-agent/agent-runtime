@@ -7,12 +7,12 @@ from portable_agent.models.proposal import (
     ProposalResult,
     UserContext,
 )
-from portable_agent.repositories.model_repository import ModelRepository
+from portable_agent.repositories.model_repository import IntentModel
 from portable_agent.repositories.policy_repository import PolicyRepository
 
 
 class ProposalService:
-    def __init__(self, model: ModelRepository, policy: PolicyRepository) -> None:
+    def __init__(self, model: IntentModel, policy: PolicyRepository) -> None:
         self._model = model
         self._policy = policy
 

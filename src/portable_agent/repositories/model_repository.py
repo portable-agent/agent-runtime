@@ -4,11 +4,13 @@ from typing import Protocol
 from portable_agent.models.proposal import ModelReply, UserContext
 
 
-class ModelRepository(Protocol):
+class IntentModel(Protocol):
+    """Внешняя модель, которая превращает текст в типизированный ответ."""
+
     async def propose(self, text: str, context: UserContext) -> ModelReply | None: ...
 
 
-class DemoModelRepository:
+class DemoIntentModel:
     """Локальная заглушка для разработки без внешней AI-модели."""
 
     async def propose(self, text: str, context: UserContext) -> ModelReply | None:
