@@ -16,6 +16,7 @@ sequenceDiagram
     OIDC-->>Controller: tenant_id и sub
     Controller->>Service: propose(text, context)
     Service->>Model: propose(text, context)
+    Note over Model: Demo или OpenAI-compatible adapter
     Model-->>Service: ModelReply или null
     alt Не хватает обязательных полей
         Service-->>Controller: Clarification
@@ -43,7 +44,7 @@ config собирает реализации; main подключает controll
 
 `ProposalService` разрешает только `calendar.create_event`, проверяет поля `title`, `startAt`,
 `endAt` и `timeZone`, а затем формирует предложение с обязательным подтверждением. Проверка не
-зависит от demo-модели, поэтому будущий AI-адаптер не меняет продуктовые правила.
+зависит от конкретной модели, поэтому OpenAI-совместимый адаптер не меняет продуктовые правила.
 
 Внутренняя модель `CalendarEvent` запрещает лишние поля, проверяет даты, часовой пояс, размеры строк,
 уникальность участников и правило `endAt > startAt`. В `ActionPlan` попадает нормализованный payload
