@@ -12,7 +12,7 @@
 - Bearer JWT с проверкой подписи, issuer, audience и срока жизни;
 - контракт `portable-agent/contracts` версии `2.1.0`;
 - простой MVC-подобный каркас;
-- локальные demo-адаптеры модели и policy для разработки без внешних сервисов;
+- внешний порт `IntentModel` и локальная `DemoIntentModel` для разработки без AI-сервиса;
 - результат с `proposal` или `clarification` для первого действия `calendar.create_event`;
 - Ruff, strict mypy, pytest и проверка покрытия;
 - русская документация MkDocs/Backstage TechDocs.

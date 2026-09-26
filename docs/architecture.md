@@ -8,7 +8,7 @@ sequenceDiagram
     participant OIDC as OIDC/JWKS
     participant Controller as Controller
     participant Service as ProposalService
-    participant Model as ModelRepository
+    participant Model as IntentModel
     participant Policy as PolicyRepository
 
     Client->>Controller: POST /api/v1/proposals + Bearer JWT
