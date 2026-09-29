@@ -110,6 +110,18 @@ def test_create_proposal_for_full_command_should_return_contract_response() -> N
     assert "proposalId" in body["proposal"]
 
 
+def test_create_proposal_when_google_calendar_is_available_should_choose_it() -> None:
+    request = valid_request()
+    context = request["context"]
+    assert isinstance(context, dict)
+    context["availableConnectors"] = ["fake-calendar", "google-calendar"]
+
+    response = client.post("/api/v1/proposals", headers=auth, json=request)
+
+    assert response.status_code == 200
+    assert response.json()["proposal"]["connector"] == "google-calendar"
+
+
 def valid_request() -> dict[str, object]:
     return {
         "text": (

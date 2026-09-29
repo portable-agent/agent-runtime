@@ -1,8 +1,6 @@
-from typing import Literal
-
 from pydantic import BaseModel, ConfigDict, Field
 
-from portable_agent.models.proposal import ActionPlan, Clarification, UserContext
+from portable_agent.models.proposal import ActionPlan, CalendarConnector, Clarification, UserContext
 from portable_agent.models.user import TokenUser
 
 
@@ -17,7 +15,7 @@ class ContextData(BaseModel):
         max_length=100,
         pattern=r"^(UTC|[A-Za-z_]+(?:/[A-Za-z0-9_+-]+)+)$",
     )
-    available_connectors: set[Literal["fake-calendar"]] = Field(
+    available_connectors: set[CalendarConnector] = Field(
         default_factory=set,
         alias="availableConnectors",
     )
