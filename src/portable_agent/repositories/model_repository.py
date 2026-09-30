@@ -18,6 +18,17 @@ class DemoIntentModel:
         if "встреч" not in normalized_text and "календар" not in normalized_text:
             return None
 
+        connector = next(
+            (
+                name
+                for name in ("google-calendar", "fake-calendar")
+                if name in context.available_tools
+            ),
+            None,
+        )
+        if connector is None:
+            return None
+
         match = re.fullmatch(
             # The Russian demo command intentionally uses a Cyrillic preposition.
             r'Создай встречу "(?P<title>[^"]+)" с (?P<start>\S+) до (?P<end>\S+)',  # noqa: RUF001
@@ -37,7 +48,7 @@ class DemoIntentModel:
 
         return ModelReply(
             kind="calendar.create_event",
-            connector="fake-calendar",
+            connector=connector,
             payload=payload,
             explanation="Создать событие календаря по команде пользователя",
         )

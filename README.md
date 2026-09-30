@@ -10,7 +10,7 @@
 
 - HTTP API на FastAPI;
 - Bearer JWT с проверкой подписи, issuer, audience и срока жизни;
-- контракт `portable-agent/contracts` версии `2.1.0`;
+- контракт `portable-agent/contracts` версии `3.0.0`;
 - простой MVC-подобный каркас;
 - внешний порт `IntentModel` и локальная `DemoIntentModel` для разработки без AI-сервиса;
 - результат с `proposal` или `clarification` для первого действия `calendar.create_event`;
@@ -82,8 +82,9 @@ uv run mkdocs build --strict
 ## Первый сценарий
 
 Сервис принимает только `calendar.create_event`. Для готового предложения нужны `title`, `startAt`,
-`endAt` и `timeZone`; исполнитель первой версии называется `fake-calendar`. Если полей не хватает,
-ответ содержит `clarification`, а `proposal` остаётся `null`. Готовое предложение всегда содержит
+`endAt` и `timeZone`. Доступны `fake-calendar` и `google-calendar`; demo-модель выбирает Google, если
+клиент передал его в `availableConnectors`, иначе использует fake. Если полей не хватает, ответ
+содержит `clarification`, а `proposal` остаётся `null`. Готовое предложение всегда содержит
 `requiresApproval: true`.
 
 Внешний запрос использует поля `text`, `timeZone` и `availableConnectors`. Проверенная копия схемы

@@ -43,7 +43,7 @@ uv run mkdocs build --strict
 При обновлении общего API сначала выпусти релиз в `portable-agent/contracts`, затем выполни:
 
 ```powershell
-.\scripts\update-contract.ps1 -Version 2.1.0
+.\scripts\update-contract.ps1 -Version 3.0.0
 ```
 
 Ручное копирование схемы запрещено: команда проверяет checksum и GitHub attestation.

@@ -37,8 +37,8 @@ def test_api_when_request_and_response_are_valid_should_match_contract() -> None
     validate(response.json(), "ProposalResponse", contract)
 
 
-def test_contract_version_should_be_2_1_0() -> None:
-    assert read_contract()["info"]["version"] == "2.1.0"
+def test_contract_version_should_be_3_0_0() -> None:
+    assert read_contract()["info"]["version"] == "3.0.0"
 
 
 def read_contract() -> dict[str, Any]:

@@ -66,6 +66,6 @@ config собирает реализации; main подключает controll
 
 ## Внешний контракт
 
-HTTP API следует `portable-agent/contracts` версии `2.1.0`: `text`, `timeZone`,
+HTTP API следует `portable-agent/contracts` версии `3.0.0`: `text`, `timeZone`,
 `availableConnectors`, `proposalId`, `requiresApproval` и `missingFields`. Копия релизной схемы
 лежит в `contracts/`; contract-тест проверяет по ней настоящий запрос и ответ.

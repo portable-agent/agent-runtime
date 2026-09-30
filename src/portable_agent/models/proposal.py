@@ -19,6 +19,9 @@ class ModelReply(BaseModel):
     explanation: str = Field(min_length=1, max_length=500)
 
 
+CalendarConnector = Literal["fake-calendar", "google-calendar"]
+
+
 Email = Annotated[
     str,
     Field(max_length=254, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$"),
@@ -67,7 +70,7 @@ class ActionPlan(BaseModel):
 
     proposal_id: UUID = Field(default_factory=uuid4, alias="proposalId")
     kind: Literal["calendar.create_event"]
-    connector: Literal["fake-calendar"]
+    connector: CalendarConnector
     payload: dict[str, Any]
     explanation: str
     risk: Risk
