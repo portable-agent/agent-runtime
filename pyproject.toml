@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.14"
 license = "Apache-2.0"
 dependencies = [
-  "fastapi==0.141.1",
+  "fastapi==0.148.0",
   "httpx>=0.28,<1",
   "PyJWT[crypto]>=2.13,<3",
   "pydantic-settings>=2.10,<3",
