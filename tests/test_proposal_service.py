@@ -74,13 +74,17 @@ async def test_propose_incomplete_calendar_event_returns_clarification() -> None
 
 
 @pytest.mark.asyncio
-async def test_propose_when_model_returns_no_call_returns_none() -> None:
+async def test_propose_when_model_returns_no_call_returns_clarification() -> None:
     service = ProposalService(FakeModel(None), FakePolicy(Risk.LOW))
 
     result = await service.propose("Привет", context("fake-calendar"))
 
     assert result.proposal is None
-    assert result.clarification is None
+    assert result.clarification is not None
+    assert result.clarification.question == (
+        "Не удалось распознать задачу. Опиши, что нужно сделать."
+    )
+    assert result.clarification.missing_fields == []
 
 
 @pytest.mark.asyncio
@@ -101,7 +105,7 @@ async def test_propose_when_connector_unavailable_rejects_proposal() -> None:
     result = await service.propose("Создай встречу", context("google-calendar"))
 
     assert result.proposal is None
-    assert result.clarification is None
+    assert result.clarification is not None
 
 
 @pytest.mark.asyncio
@@ -117,7 +121,7 @@ async def test_propose_when_action_is_not_allowed_returns_empty_result() -> None
     result = await service.propose("Переведи деньги", context("wallet"))
 
     assert result.proposal is None
-    assert result.clarification is None
+    assert result.clarification is not None
 
 
 @pytest.mark.asyncio
@@ -191,4 +195,4 @@ async def test_propose_when_calendar_payload_is_invalid_returns_empty_result(
     result = await service.propose("Создай встречу", context("fake-calendar"))
 
     assert result.proposal is None
-    assert result.clarification is None
+    assert result.clarification is not None

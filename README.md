@@ -84,8 +84,9 @@ uv run mkdocs build --strict
 Сервис принимает только `calendar.create_event`. Для готового предложения нужны `title`, `startAt`,
 `endAt` и `timeZone`. Доступны `fake-calendar` и `google-calendar`; demo-модель выбирает Google, если
 клиент передал его в `availableConnectors`, иначе использует fake. Если полей не хватает, ответ
-содержит `clarification`, а `proposal` остаётся `null`. Готовое предложение всегда содержит
-`requiresApproval: true`.
+содержит `clarification`, а `proposal` остаётся `null`. Если модель не распознала действие или
+выбрала недоступный коннектор, пользователь получает просьбу описать задачу снова. Готовое
+предложение всегда содержит `requiresApproval: true`.
 
 Внешний запрос использует поля `text`, `timeZone` и `availableConnectors`. Проверенная копия схемы
 лежит в `contracts/agent-runtime-api.yaml`; безопасное обновление выполняет

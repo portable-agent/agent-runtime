@@ -19,11 +19,11 @@ class ProposalService:
     async def propose(self, text: str, context: UserContext) -> ProposalResult:
         reply = await self._model.propose(text, context)
         if reply is None:
-            return ProposalResult()
+            return _unsupported_reply()
         if reply.kind != "calendar.create_event":
-            return ProposalResult()
+            return _unsupported_reply()
         if reply.connector not in context.available_tools:
-            return ProposalResult()
+            return _unsupported_reply()
 
         missing_fields = _get_missing_fields(reply.payload)
         if missing_fields:
@@ -37,7 +37,7 @@ class ProposalService:
         try:
             event = CalendarEvent.model_validate(reply.payload)
         except ValidationError:
-            return ProposalResult()
+            return _unsupported_reply()
 
         risk = await self._policy.get_risk(reply, context)
         return ProposalResult(
@@ -78,3 +78,12 @@ def _get_question(missing_fields: list[str]) -> str:
     names = [_FIELD_NAMES[field] for field in missing_fields]
     fields_text = names[0] if len(names) == 1 else f"{', '.join(names[:-1])} и {names[-1]}"
     return f"Укажи {fields_text} встречи."
+
+
+def _unsupported_reply() -> ProposalResult:
+    return ProposalResult(
+        clarification=Clarification(
+            question="Не удалось распознать задачу. Опиши, что нужно сделать.",  # noqa: RUF001
+            missing_fields=[],
+        )
+    )
